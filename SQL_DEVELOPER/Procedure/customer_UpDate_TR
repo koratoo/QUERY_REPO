@@ -1,0 +1,23 @@
+create table customer_UpDate_TR(
+custid number,
+name varchar2(20),
+address varchar2(40),
+phone varchar2(20));
+
+drop TRIGGER Update_Trigger;
+
+create or replace trigger Update_Trigger
+AFTER UPDATE ON CUSTOMER for each row
+
+begin 
+    insert into customer_UpDate_TR
+    values(:old.custid,:old.name,:old.address,:old.phone);
+    DBMS_OUTPUT.put_line('업데이트 된 튜플을 테이블에 저장');
+end;
+/
+set serveroutput on
+update customer
+set address='대한민국 광주'
+where name = '박지성';
+
+select * from customer_UpDate_TR;
